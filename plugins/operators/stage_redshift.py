@@ -1,6 +1,7 @@
 from airflow.hooks.postgres_hook import PostgresHook
 from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
+from airflow.contrib.hooks.aws_hook import AwsHook
 
 class StageToRedshiftOperator(BaseOperator):
     ui_color = '#358140'
@@ -41,7 +42,7 @@ class StageToRedshiftOperator(BaseOperator):
                     FROM '{s3_path}'
                     ACCESS_KEY_ID '{creds.access_key}'
                     SECRET_ACCESS_KEY '{creds.secret_key}'
-                    JSON '{self.json_path}'
+                    JSON '{self.s3_path}'
                     COMPUPDATE OFF
                 """
         redshift.run(sql)
